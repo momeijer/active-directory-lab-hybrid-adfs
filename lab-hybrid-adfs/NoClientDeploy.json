@@ -10,7 +10,7 @@
     },
     "assetLocation": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/tvuylsteke/active-directory-lab-hybrid-adfs/tree/master/lab-hybrid-adfs/",
+      "defaultValue": "https://raw.githubusercontent.com/tvuylsteke/active-directory-lab-hybrid-adfs/master/lab-hybrid-adfs/",
       "metadata": { "description": "This is the location in which all the linked templates are stored." }
     },
     "adminUsername": {

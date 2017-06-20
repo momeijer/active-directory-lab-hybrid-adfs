@@ -67,6 +67,10 @@ if (!(Test-Path -Path "$($completeFile)$step")) {
     New-Item -ItemType file "$($completeFile)$step"
 }
 
+<#
+
+CHECK: I don't think it's a good idea to touch the NIC directly inside the VM
+
 $step=3
 if (!(Test-Path -Path "$($completeFile)$step")) {
     $Dns = "127.0.0.1"
@@ -107,4 +111,4 @@ if (!(Test-Path -Path "$($completeFile)$step")) {
     #record that we got this far
     New-Item -ItemType file "$($completeFile)$step"
 }
-
+#>
