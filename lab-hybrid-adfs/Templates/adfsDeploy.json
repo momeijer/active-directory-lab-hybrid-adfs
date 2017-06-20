@@ -2,6 +2,12 @@
   "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "adfsOsSKU": {
+      "type": "string",
+      "defaultValue": "2016-Datacenter",
+      "allowedValues": ["2012-R2-Datacenter", "2016-Datacenter" ],
+      "metadata": { "description": "The operating system to be used for AD FS. The domain controller will be running Server 2016 in all cases." }
+    },
     "dmzNSGName": {
       "type": "string",
       "defaultValue": "DMZ-WAP"
@@ -104,7 +110,7 @@
     "domainJoinOptions": "3",
     "imageOffer": "WindowsServer",
     "imagePublisher": "MicrosoftWindowsServer",
-    "imageSKU": "2012-R2-Datacenter",
+    "imageSKU": "[parameters('adfsOsSKU')]",
     "publicIPAddressDNSName": "[tolower(parameters('publicIPAddressDNSName'))]",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
     "wapDSCConfigurationFunction": "wapDSCConfiguration.ps1\\Main",
