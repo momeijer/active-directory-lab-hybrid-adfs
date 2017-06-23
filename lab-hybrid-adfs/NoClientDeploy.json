@@ -270,9 +270,9 @@
       "properties": {
         "publisher": "Microsoft.Powershell",
         "type": "DSC",
-        "typeHandlerVersion": "2.24",
+        "typeHandlerVersion": "2.21",
         "forceUpdateTag": "1.02",
-        "autoUpgradeMinorVersion": false,
+        "autoUpgradeMinorVersion": true,
         "settings": {
           "modulesUrl": "[variables('adDSCTemplate')]",
           "configurationFunction": "[variables('adDSCConfigurationFunction')]",
