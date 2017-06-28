@@ -14,6 +14,9 @@ configuration DomainController
         [System.Management.Automation.PSCredential]$AdminCreds,
 
         [Parameter(Mandatory)]
+        [String]$Domain,
+
+        [Parameter(Mandatory)]
         [String]$ADFSIPAddress,
 
 		[Parameter(Mandatory)]
@@ -26,10 +29,9 @@ configuration DomainController
         [Int]$RetryIntervalSec=30
     )
     
-    $wmiDomain      = Get-WmiObject Win32_NTDomain -Filter "DnsForestName = '$( (Get-WmiObject Win32_ComputerSystem).Domain)'"
-    $shortDomain    = $wmiDomain.DomainName
-    $DomainName     = $wmidomain.DnsForestName
-    $ComputerName   = $wmiDomain.PSComputerName
+    $shortDomain    = $Domain.Split(".")[0]
+    $DomainName     = $Domain
+    $ComputerName   = $env:COMPUTERNAME
     $CARootName     = "$($shortDomain.ToLower())-$($ComputerName.ToUpper())-CA"
     $CAServerFQDN   = "$ComputerName.$DomainName"
 
@@ -43,7 +45,7 @@ configuration DomainController
     $ClearPw        = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($CertPw))
 	$ClearDefUserPw = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($UserCreds.Password))
 
-    Import-DscResource -ModuleName xComputerManagement,xNetworking,xSmbShare,xAdcsDeployment,xCertificate,PSDesiredStateConfiguration
+    Import-DscResource -ModuleName xActiveDirectory,xComputerManagement,xNetworking,xSmbShare,xAdcsDeployment,xCertificate,PSDesiredStateConfiguration
 
     [System.Management.Automation.PSCredential]$DomainCreds = New-Object System.Management.Automation.PSCredential ("${shortDomain}\$($Admincreds.UserName)", $Admincreds.Password)
     
@@ -55,10 +57,63 @@ configuration DomainController
             RebootNodeIfNeeded = $true
         }
 
+        WindowsFeature DNS
+        {
+            Ensure = "Present"
+            Name = "DNS"
+        }
+        
+        WindowsFeature DnsTools
+        {
+            Ensure = "Present"
+            Name = "RSAT-DNS-Server"
+            DependsOn = "[WindowsFeature]DNS"
+        }
+
+        WindowsFeature ADTools
+        {
+            Ensure = "Present"
+            Name = "RSAT-AD-Tools"
+            DependsOn = "[WindowsFeature]DNS"
+        }
+        
+        WindowsFeature GPOTools
+        {
+            Ensure = "Present"
+            Name = "GPMC"
+            DependsOn = "[WindowsFeature]DNS"
+        }
+
+        WindowsFeature DFSTools
+        {
+            Ensure = "Present"
+            Name = "RSAT-DFS-Mgmt-Con"
+            DependsOn = "[WindowsFeature]DNS"
+        }
+
+        WindowsFeature ADDSInstall
+        {
+            Ensure = "Present"
+            Name = "AD-Domain-Services"
+            DependsOn = "[WindowsFeature]ADTools"
+        }
+
+        xADDomain FirstDS
+        {
+            DomainName = $DomainName
+            DomainAdministratorCredential = $DomainCreds
+            SafemodeAdministratorPassword = $DomainCreds
+            #DatabasePath = "F:\NTDS"
+            #LogPath = "F:\NTDS"
+            #SysvolPath = "F:\SYSVOL"
+            DependsOn = "[WindowsFeature]ADDSInstall"
+        }
+
         WindowsFeature ADCS-Cert-Authority
         {
             Ensure = 'Present'
             Name = 'ADCS-Cert-Authority'
+            DependsOn = "[xADDomain]FirstDS"            
         }
 
         WindowsFeature RSAT-ADCS-Mgmt

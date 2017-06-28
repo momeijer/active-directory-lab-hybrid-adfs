@@ -28,10 +28,6 @@
       "type": "string",
       "defaultValue": "AZAD"
     },
-    "adDomainName": {
-      "type": "string",
-      "defaultValue": "contoso.com"
-    },
     "assetLocation": {
       "type": "string"
     },
@@ -54,9 +50,7 @@
       "metadata": { "description": "This is the allowed list of VM sizes" }
     }
   },
-  "variables": {
-    "DeployADTemplate": "DeployAD.ps1",
-    "DeployADTemplateUri": "[concat(parameters('assetLocation'), 'Scripts/DeployAD.ps1')]",
+  "variables": {   
     "adSubnetID": "[concat(variables('vnetID'),'/subnets/', parameters('adSubnetName'))]",
     "imageOffer": "WindowsServer",
     "imagePublisher": "MicrosoftWindowsServer",
@@ -146,34 +140,7 @@
             }
           ]
         }
-      },
-      "resources": [
-        {
-          "name": "DeployAD",
-          "type": "extensions",
-          "location": "[resourceGroup().location]",
-          "apiVersion": "2015-06-15",
-          "dependsOn": [
-            "[concat('Microsoft.Compute/virtualMachines/', concat(parameters('adVMName')))]"
-          ],
-          "tags": {
-            "displayName": "DeployAD"
-          },
-          "properties": {
-            "publisher": "Microsoft.Compute",
-            "type": "CustomScriptExtension",
-            "forceUpdateTag": "1.0.1",
-            "typeHandlerVersion": "1.4",
-            "autoUpgradeMinorVersion": false,
-            "settings": {
-              "fileUris": [
-                "[variables('DeployADTemplateUri')]"
-              ],
-              "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ', variables('DeployADTemplate'), ' ', parameters('adDomainName'), ' ', parameters('adminPassword'))]"
-            }
-          }
-        }
-      ]
+      }
     }
   ],
   "outputs": {
