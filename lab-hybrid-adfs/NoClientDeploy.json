@@ -225,8 +225,7 @@
         "parameters": {
           "adIP": { "value": "[parameters('adIP')]" },
           "adminPassword": { "value": "[parameters('adminPassword')]" },
-          "adminUsername": { "value": "[parameters('adminUsername')]" },
-          "adDomainName": { "value": "[parameters('adDomainName')]" },
+          "adminUsername": { "value": "[parameters('adminUsername')]" },          
           "adSubnetName": { "value": "[variables('adSubnetName')]" },
           "adVMName": { "value": "[variables('adVMName')]" },
           "assetlocation": { "value": "[parameters('assetLocation')]" },
@@ -294,6 +293,11 @@
                 "Password": "PrivateSettingsRef:AdminPassword"
               },
               "TypeName": "System.Management.Automation.PSCredential"
+            },
+            {
+              "Name": "Domain",
+              "Value": "[parameters('adDomainName')]",
+              "TypeName": "System.String"
             },
             {
               "Name": "ADFSIPAddress",
