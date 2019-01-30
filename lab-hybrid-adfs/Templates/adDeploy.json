@@ -146,7 +146,7 @@
   "outputs": {
     "ADVMFQDN": {
         "type": "string",
-        "value": "[reference(parameters('adVMName')).dnsSettings.Fqdn]"
+        "value": "[reference(variables('adPubIPName')).dnsSettings.Fqdn]"
     }
   }
 }
