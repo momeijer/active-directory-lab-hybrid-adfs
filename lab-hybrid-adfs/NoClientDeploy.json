@@ -215,7 +215,7 @@
     {
       "apiVersion": "[providers('Microsoft.Resources','deployments').apiVersions[0]]",
       "type": "Microsoft.Resources/deployments",
-      "name": "adVMs,",
+      "name": "adVMs",
 
       "dependsOn": [
         "Microsoft.Resources/deployments/virtualNetwork"
