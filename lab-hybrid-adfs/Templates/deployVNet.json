@@ -6,7 +6,7 @@
     "virtualNetworkAddressRange": {
       "type": "string",
       "metadata": { "description": "The address range of the new VNET in CIDR format" },
-      "defaultValue": "10.0.0.0/16"
+      "defaultValue": "11.0.0.0/16"
     },
     "subnets": { "type": "array" }
   },
@@ -19,7 +19,7 @@
       "type": "Microsoft.Network/virtualNetworks",
       "location": "[variables('location')]",
       "tags": { "displayName": "virtualNetwork" },
-      "apiVersion": "2015-06-15",
+      "apiVersion": "[providers('Microsoft.Network','virtualNetwork').apiVersions[0]]",
       "properties": {
         "addressSpace": {
           "addressPrefixes": [
