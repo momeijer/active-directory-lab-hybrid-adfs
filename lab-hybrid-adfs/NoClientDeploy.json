@@ -186,7 +186,7 @@
       "name": "virtualNetwork",
 
       "dependsOn": [
-        "Microsoft.Resources/Deployments/NSGs"
+        "Microsoft.Resources/deployments/NSGs"
       ],
       "properties": {
         "mode": "Incremental",
@@ -218,7 +218,7 @@
       "name": "adVMs,",
 
       "dependsOn": [
-        "Microsoft.Resources/Deployments/virtualNetwork"
+        "Microsoft.Resources/deployments/virtualNetwork"
       ],
       "properties": {
         "mode": "Incremental",
@@ -244,7 +244,7 @@
       "name": "virtualNetworkDNSUpdate",
 
       "dependsOn": [
-        "Microsoft.Resources/Deployments/adVMs"
+        "Microsoft.Resources/deployments/adVMs"
       ],
       "properties": {
         "mode": "Incremental",
@@ -264,7 +264,7 @@
       "location": "[variables('location')]",
 
       "dependsOn": [
-        "Microsoft.Resources/Deployments/adVMs"
+        "Microsoft.Resources/deployments/adVMs"
       ],
       "tags": {
         "displayName": "adDSC"
