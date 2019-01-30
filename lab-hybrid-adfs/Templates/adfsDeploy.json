@@ -116,14 +116,14 @@
   },
   "resources": [
     {
-      "name": "[concat(variables('adfsPubIpName'), copyIndex(1))]",
+      "apiVersion": "[providers('Microsoft.Network','publicIPAddresses').apiVersions[0]]",
       "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[concat(variables('adfsPubIpName'), copyIndex(1))]",
       "location": "[parameters('location')]",
       "copy": {
         "name": "adfsIpCopy",
         "count": "[variables('adfsDeployCount')]"
       },
-      "apiVersion": "[providers('Microsoft.Network','publicIPAddresses').apiVersions[0]]",
       "tags": {
         "displayName": "adfsPubIp"
       },
@@ -135,14 +135,14 @@
       }
     },
     {
-      "name": "[concat(variables('wapPubIpName'), copyIndex(1))]",
+      "apiVersion": "[providers('Microsoft.Network','publicIPAddresses').apiVersions[0]]",
       "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[concat(variables('wapPubIpName'), copyIndex(1))]",
       "location": "[parameters('location')]",
       "copy": {
         "name": "wapIpCopy",
         "count": "[variables('adfsDeployCount')]"
       },
-      "apiVersion": "[providers('Microsoft.Network','publicIPAddresses').apiVersions[0]]",
       "tags": {
         "displayName": "wapPubIp"
       },

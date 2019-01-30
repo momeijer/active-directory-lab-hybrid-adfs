@@ -181,9 +181,10 @@
   },
   "resources": [
     {
-      "name": "virtualNetwork",
-      "type": "Microsoft.Resources/deployments",
       "apiVersion": "[providers('Microsoft.Resources','deployments').apiVersions[0]]",
+      "type": "Microsoft.Resources/deployments",
+      "name": "virtualNetwork",
+
       "dependsOn": [
         "Microsoft.Resources/Deployments/NSGs"
       ],
@@ -198,9 +199,9 @@
       }
     },
     {
-      "name": "NSGs",
-      "type": "Microsoft.Resources/deployments",
       "apiVersion": "[providers('Microsoft.Resources','deployments').apiVersions[0]]",
+      "type": "Microsoft.Resources/deployments",
+      "name": "NSGs",
       "properties": {
         "mode": "Incremental",
         "templateLink": { "uri": "[variables('nsgTemplateURI')]" },
@@ -212,9 +213,10 @@
       }
     },
     {
-      "name": "adVMs",
-      "type": "Microsoft.Resources/deployments",
       "apiVersion": "[providers('Microsoft.Resources','deployments').apiVersions[0]]",
+      "type": "Microsoft.Resources/deployments",
+      "name": "adVMs,",
+
       "dependsOn": [
         "Microsoft.Resources/Deployments/virtualNetwork"
       ],
@@ -237,9 +239,10 @@
       }
     },
     {
-      "name": "virtualNetworkDNSUpdate",
-      "type": "Microsoft.Resources/deployments",
       "apiVersion": "[providers('Microsoft.Resources','deployments').apiVersions[0]]",
+      "type": "Microsoft.Resources/deployments",
+      "name": "virtualNetworkDNSUpdate",
+
       "dependsOn": [
         "Microsoft.Resources/Deployments/adVMs"
       ],
@@ -255,10 +258,11 @@
       }
     },
     {
-      "name": "[concat(variables('adVMName'),'/Microsoft.Powershell.DSC')]",
-      "type": "Microsoft.Compute/virtualMachines/extensions",
-      "location": "[variables('location')]",
       "apiVersion": "[providers('Microsoft.Compute','virtualMachines/extensions').apiVersions[0]]",
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[concat(variables('adVMName'),'/Microsoft.Powershell.DSC')]",
+      "location": "[variables('location')]",
+
       "dependsOn": [
         "Microsoft.Resources/Deployments/adVMs"
       ],
@@ -327,9 +331,11 @@
       }
     },
     {
-      "name": "adfsVMs",
-      "type": "Microsoft.Resources/deployments",
+
       "apiVersion": "[providers('Microsoft.Resources','deployments').apiVersions[0]]",
+      "type": "Microsoft.Resources/deployments",
+      "name": "adfsVMs",
+
       "dependsOn": [
         "virtualNetworkDNSUpdate"
       ],
@@ -359,10 +365,12 @@
       }
     },
     {
-      "name": "[concat(variables('adfsVMName'), copyIndex(1),'/Microsoft.Powershell.DSC')]",
-      "type": "Microsoft.Compute/virtualMachines/extensions",
-      "location": "[variables('location')]",
       "apiVersion": "[providers('Microsoft.Compute','virtualMachines/extensions').apiVersions[0]]",
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[concat(variables('adfsVMName'), copyIndex(1),'/Microsoft.Powershell.DSC')]",
+
+      "location": "[variables('location')]",
+
       "copy": {
         "name": "adfsDscCopy",
         "count": "[variables('adfsDeployCount')]"
@@ -402,10 +410,11 @@
       }
     },
     {
-      "name": "[concat(variables('adfsVMName'), copyIndex(1),'/InstallADFS')]",
-      "type": "Microsoft.Compute/virtualMachines/extensions",
-      "location": "[resourceGroup().location]",
       "apiVersion": "[providers('Microsoft.Compute','virtualMachines/extensions').apiVersions[0]]",
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[concat(variables('adfsVMName'), copyIndex(1),'/InstallADFS')]",
+      "location": "[resourceGroup().location]",
+
       "dependsOn": [
         "adfsDscCopy"
       ],
@@ -430,10 +439,11 @@
       }
     },
     {
-      "name": "[concat(variables('wapVMName'), copyIndex(1),'/Microsoft.Powershell.DSC')]",
-      "type": "Microsoft.Compute/virtualMachines/extensions",
-      "location": "[variables('location')]",
       "apiVersion": "[providers('Microsoft.Compute','virtualMachines/extensions').apiVersions[0]]",
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[concat(variables('wapVMName'), copyIndex(1),'/Microsoft.Powershell.DSC')]",
+      "location": "[variables('location')]",
+
       "copy": {
         "name": "wapDscPrepCopy",
         "count": "[variables('adfsDeployCount')]"
@@ -457,10 +467,11 @@
       }
     },
     {
-      "name": "[concat(variables('wapVMName'), copyIndex(1),'/CopyCertToWAP')]",
-      "type": "Microsoft.Compute/virtualMachines/extensions",
-      "location": "[resourceGroup().location]",
       "apiVersion": "[providers('Microsoft.Compute','virtualMachines/extensions').apiVersions[0]]",
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[concat(variables('wapVMName'), copyIndex(1),'/CopyCertToWAP')]",
+      "location": "[resourceGroup().location]",
+
       "dependsOn": [
         "wapDscPrepCopy",
         "adfsFarmInstallCopy"

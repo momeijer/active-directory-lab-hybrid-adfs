@@ -15,11 +15,11 @@
   },
   "resources": [
     {
-      "name": "[parameters('virtualNetworkName')]",
+      "apiVersion": "[providers('Microsoft.Network','virtualNetworks').apiVersions[0]]",
       "type": "Microsoft.Network/virtualNetworks",
+      "name": "[parameters('virtualNetworkName')]",
       "location": "[variables('location')]",
       "tags": { "displayName": "virtualNetwork" },
-      "apiVersion": "[providers('Microsoft.Network','virtualNetworks').apiVersions[0]]",
       "properties": {
         "addressSpace": {
           "addressPrefixes": [

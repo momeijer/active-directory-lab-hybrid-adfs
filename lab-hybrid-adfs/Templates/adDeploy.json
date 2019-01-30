@@ -61,10 +61,11 @@
   },
   "resources": [
     {
-      "name": "[variables('adPubIPName')]",
-      "type": "Microsoft.Network/publicIPAddresses",
-      "location": "[parameters('location')]",
       "apiVersion": "[providers('Microsoft.Network','publicIPAddresses').apiVersions[0]]",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[variables('adPubIPName')]",
+      "location": "[parameters('location')]",
+
       "tags": {
         "displayName": "adPubIP"
       },
