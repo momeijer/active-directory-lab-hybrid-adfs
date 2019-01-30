@@ -244,8 +244,12 @@
             "version": "latest"
           },
           "osDisk": {
+            "name": "[concat(parameters('adfsVMName'),'_OSDisk')]",
             "caching": "ReadWrite",
-            "createOption": "FromImage"
+            "createOption": "FromImage",
+            "managedDisk": {
+              "storageAccountType": "Standard_LRS"
+            }
           }
         },
         "networkProfile": {
@@ -322,8 +326,12 @@
             "version": "latest"
           },
           "osDisk": {
+            "name": "[concat(parameters('wapVMName'),'_OSDisk')]",
             "caching": "ReadWrite",
-            "createOption": "FromImage"
+            "createOption": "FromImage",
+            "managedDisk": {
+              "storageAccountType": "Standard_LRS"
+            } 
           }
         },
         "networkProfile": {

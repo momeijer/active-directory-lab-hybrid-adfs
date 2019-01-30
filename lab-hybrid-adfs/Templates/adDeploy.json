@@ -129,8 +129,12 @@
             "version": "latest"
           },
           "osDisk": {
+            "name": "[concat(parameters('adVMName'),'_OSDisk')]",
             "caching": "ReadWrite",
-            "createOption": "FromImage"
+            "createOption": "FromImage",
+            "managedDisk": {
+              "storageAccountType": "Standard_LRS"
+            }
           }
         },
         "networkProfile": {
