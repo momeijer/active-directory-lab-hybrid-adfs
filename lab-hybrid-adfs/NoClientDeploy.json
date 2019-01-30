@@ -5,17 +5,16 @@
     "adfsOsSKU": {
       "type": "string",
       "defaultValue": "2016-Datacenter",
-      "allowedValues": ["2012-R2-Datacenter", "2016-Datacenter" ],
       "metadata": { "description": "The operating system to be used for AD FS. The domain controller will be running Server 2016 in all cases." }
     },
     "assetLocation": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/tvuylsteke/active-directory-lab-hybrid-adfs/master/lab-hybrid-adfs/",
+      "defaultValue": "https://raw.githubusercontent.com/momeijer/active-directory-lab-hybrid-adfs/master/lab-hybrid-adfs/",
       "metadata": { "description": "This is the location in which all the linked templates are stored." }
     },
     "adminUsername": {
       "type": "string",
-      "defaultValue": "azadmin",
+      "defaultValue": "michaeladmin",
       "metadata": { "description": "Username to set for the local User. Cannot be \"Administrator\", \"root\" and possibly other such common account names. " }
     },
     "deploymentNumber": {
@@ -30,7 +29,7 @@
     },
     "adDomainName": {
       "type": "string",
-      "defaultValue": "contoso.com",
+      "defaultValue": "adfs2016lab.com",
       "metadata": { "description": "Two-part internal AD name - short/NB name will be first part ('contoso')." }
     },
     "usersArray": {
@@ -78,32 +77,32 @@
     "virtualNetworkAddressRange": {
       "type": "string",
       "metadata": { "description": "The address range of the new virtual network in CIDR format" },
-      "defaultValue": "10.0.0.0/16"
+      "defaultValue": "11.0.0.0/16"
     },
     "adSubnetAddressRange": {
       "type": "string",
       "metadata": { "description": "The address range of the desired subnet for Active Directory." },
-      "defaultValue": "10.0.1.0/24"
+      "defaultValue": "11.0.1.0/24"
     },
     "adIP": {
       "type": "string",
-      "metadata": { "description": "The IP Addresses assigned to the domain controllers (a, b). Remember the first IP in a subnet is .4 e.g. 10.0.0.0/16 reserves 10.0.0.0-3. Specify one IP per server - must match numberofVMInstances or deployment will fail." },
-      "defaultValue": "10.0.1.4"
+      "metadata": { "description": "The IP Addresses assigned to the domain controllers (a, b). Remember the first IP in a subnet is .4 e.g. 11.0.0.0/16 reserves 11.0.0.0-3. Specify one IP per server - must match numberofVMInstances or deployment will fail." },
+      "defaultValue": "11.0.1.4"
     },
     "adfsIP": {
       "type": "string",
-      "metadata": { "description": "The IP Addresses assigned to the domain controllers (a, b). Remember the first IP in a subnet is .4 e.g. 10.0.0.0/16 reserves 10.0.0.0-3. Specify one IP per server - must match numberofVMInstances or deployment will fail." },
-      "defaultValue": "10.0.1.5"
+      "metadata": { "description": "The IP Addresses assigned to the domain controllers (a, b). Remember the first IP in a subnet is .4 e.g. 11.0.0.0/16 reserves 11.0.0.0-3. Specify one IP per server - must match numberofVMInstances or deployment will fail." },
+      "defaultValue": "11.0.1.5"
     },
     "dmzSubnetAddressRange": {
       "type": "string",
       "metadata": { "description": "The address range of the desired subnet for the DMZ." },
-      "defaultValue": "10.0.2.0/24"
+      "defaultValue": "11.0.2.0/24"
     },
     "cliSubnetAddressRange": {
       "type": "string",
       "metadata": { "description": "The address range of the desired subnet for clients." },
-      "defaultValue": "10.0.3.0/24"
+      "defaultValue": "11.0.3.0/24"
     }
   },
   "variables": {
@@ -131,7 +130,7 @@
     "cliSubnetName": "[concat('clientSubnet', parameters('deploymentNumber'))]",
     "imageOffer": "WindowsServer",
     "imagePublisher": "MicrosoftWindowsServer",
-    "imageSKU": "2012-R2-Datacenter",
+    "imageSKU": "2016-Datacenter",
     "publicIPAddressDNSName": "[tolower(concat(variables('companyNamePrefix'),parameters('deploymentNumber'),'-adfs'))]",
     "rdpIPAddressDNSName": "[tolower(concat(variables('companyNamePrefix'),'-adfs-rdp'))]",
     "storageAccountType": "Standard_LRS",
@@ -184,7 +183,7 @@
     {
       "name": "virtualNetwork",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "[providers('Microsoft.Resources','deployments').apiVersions[0]]",
       "dependsOn": [
         "Microsoft.Resources/Deployments/NSGs"
       ],
@@ -201,7 +200,7 @@
     {
       "name": "NSGs",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "[providers('Microsoft.Resources','deployments').apiVersions[0]]",
       "properties": {
         "mode": "Incremental",
         "templateLink": { "uri": "[variables('nsgTemplateURI')]" },
@@ -215,7 +214,7 @@
     {
       "name": "adVMs",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "[providers('Microsoft.Resources','deployments').apiVersions[0]]",
       "dependsOn": [
         "Microsoft.Resources/Deployments/virtualNetwork"
       ],
@@ -240,7 +239,7 @@
     {
       "name": "virtualNetworkDNSUpdate",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "[providers('Microsoft.Resources','deployments').apiVersions[0]]",
       "dependsOn": [
         "Microsoft.Resources/Deployments/adVMs"
       ],
@@ -259,7 +258,7 @@
       "name": "[concat(variables('adVMName'),'/Microsoft.Powershell.DSC')]",
       "type": "Microsoft.Compute/virtualMachines/extensions",
       "location": "[variables('location')]",
-      "apiVersion": "2015-06-15",
+      "apiVersion": "[providers('Microsoft.Compute','virtualMachines/extensions').apiVersions[0]]",
       "dependsOn": [
         "Microsoft.Resources/Deployments/adVMs"
       ],
@@ -330,7 +329,7 @@
     {
       "name": "adfsVMs",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "[providers('Microsoft.Resources','deployments').apiVersions[0]]",
       "dependsOn": [
         "virtualNetworkDNSUpdate"
       ],
@@ -363,7 +362,7 @@
       "name": "[concat(variables('adfsVMName'), copyIndex(1),'/Microsoft.Powershell.DSC')]",
       "type": "Microsoft.Compute/virtualMachines/extensions",
       "location": "[variables('location')]",
-      "apiVersion": "2015-06-15",
+      "apiVersion": "[providers('Microsoft.Compute','virtualMachines/extensions').apiVersions[0]]",
       "copy": {
         "name": "adfsDscCopy",
         "count": "[variables('adfsDeployCount')]"
@@ -406,7 +405,7 @@
       "name": "[concat(variables('adfsVMName'), copyIndex(1),'/InstallADFS')]",
       "type": "Microsoft.Compute/virtualMachines/extensions",
       "location": "[resourceGroup().location]",
-      "apiVersion": "2015-06-15",
+      "apiVersion": "[providers('Microsoft.Compute','virtualMachines/extensions').apiVersions[0]]",
       "dependsOn": [
         "adfsDscCopy"
       ],
@@ -434,7 +433,7 @@
       "name": "[concat(variables('wapVMName'), copyIndex(1),'/Microsoft.Powershell.DSC')]",
       "type": "Microsoft.Compute/virtualMachines/extensions",
       "location": "[variables('location')]",
-      "apiVersion": "2015-06-15",
+      "apiVersion": "[providers('Microsoft.Compute','virtualMachines/extensions').apiVersions[0]]",
       "copy": {
         "name": "wapDscPrepCopy",
         "count": "[variables('adfsDeployCount')]"
@@ -461,7 +460,7 @@
       "name": "[concat(variables('wapVMName'), copyIndex(1),'/CopyCertToWAP')]",
       "type": "Microsoft.Compute/virtualMachines/extensions",
       "location": "[resourceGroup().location]",
-      "apiVersion": "2015-06-15",
+      "apiVersion": "[providers('Microsoft.Compute','virtualMachines/extensions').apiVersions[0]]",
       "dependsOn": [
         "wapDscPrepCopy",
         "adfsFarmInstallCopy"
