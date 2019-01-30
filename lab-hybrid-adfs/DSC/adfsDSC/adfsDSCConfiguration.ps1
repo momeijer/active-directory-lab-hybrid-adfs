@@ -57,7 +57,7 @@ Configuration Main
                 $PathToCert="$DCName\src\*.pfx"
                 $File = Get-ChildItem -Path $PathToCert
                 $Subject=$File.BaseName
-                $cert = Get-ChildItem Cert:\LocalMachine\My | where {$_.Subject -eq "CN=$Subject"} -ErrorAction SilentlyContinue
+                $cert = Get-ChildItem Cert:\LocalMachine\My | Where-Object {$_.Subject -eq "CN=$Subject"} -ErrorAction SilentlyContinue
                 return ($cert -ine $null)   #if not null (if we have the cert) return true
             }
         }

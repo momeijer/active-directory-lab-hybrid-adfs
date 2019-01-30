@@ -7,7 +7,7 @@ function ResetWAPTrust
 	$File      = Get-ChildItem -Path "c:\temp\*.pfx"
 	$Subject   = $File.BaseName
 
-	$cert      = Get-ChildItem Cert:\LocalMachine\My | where {$_.Subject -eq "CN=$Subject"} -ErrorAction SilentlyContinue
+	$cert      = Get-ChildItem Cert:\LocalMachine\My | Where-Object {$_.Subject -eq "CN=$Subject"} -ErrorAction SilentlyContinue
 
 	Install-WebApplicationProxy `
 		-FederationServiceTrustCredential $DomainCreds `

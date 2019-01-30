@@ -285,8 +285,8 @@
         "typeHandlerVersion": "1.3",
         "autoUpgradeMinorVersion": true,
         "settings": {
-          "Name": "[variables('shortDomainName')]",
-          "User": "[concat(variables('shortDomainName'), '\\', parameters('adminUsername'))]",
+          "Name": "[parameters('adDomainName')]",
+          "User": "[concat(variables('shortDomainName'), '\\',parameters('adminUsername'))]",
           "OUPath": "",
           "Restart": "true",
           "Options": "[variables('domainJoinOptions')]"

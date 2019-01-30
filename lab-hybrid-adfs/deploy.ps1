@@ -14,7 +14,7 @@ Import-Module Azure -ErrorAction SilentlyContinue
     $DeployRegion            = "<SELECT AZURE REGION>"
 
     $Branch                  = "master"
-    $AssetLocation           = "https://raw.githubusercontent.com/Azure-Samples/active-directory-lab-hybrid-adfs/$Branch/lab-hybrid-adfs/"
+    $AssetLocation           = "https://raw.githubusercontent.com/momeijer/active-directory-lab-hybrid-adfs/$Branch/lab-hybrid-adfs/"
 
     $userName                = "<AD ADMINISTRATOR LOGIN>"
     $secpasswd               = “<AD ADMINISTRATOR PASSWORD>”

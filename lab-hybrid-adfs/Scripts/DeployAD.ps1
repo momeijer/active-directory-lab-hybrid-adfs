@@ -11,14 +11,14 @@ $ErrorActionPreference = "Stop"
 
 $completeFile="c:\temp\prereqsComplete"
 if (!(Test-Path -Path "c:\temp")) {
-    md "c:\temp"
+    mkdir "c:\temp"
 }
 
 $step=1
 if (!(Test-Path -Path "$($completeFile)$step")) {
     # Shortcuts
 	if (!(Test-Path -Path "c:\AADLab")) {
-		md "c:\AADLab" -ErrorAction Ignore
+		mkdir "c:\AADLab" -ErrorAction Ignore
 	}
 
 	$WshShell = New-Object -comObject WScript.Shell
@@ -67,10 +67,6 @@ if (!(Test-Path -Path "$($completeFile)$step")) {
     New-Item -ItemType file "$($completeFile)$step"
 }
 
-<#
-
-CHECK: I don't think it's a good idea to touch the NIC directly inside the VM
-
 $step=3
 if (!(Test-Path -Path "$($completeFile)$step")) {
     $Dns = "127.0.0.1"
@@ -111,4 +107,3 @@ if (!(Test-Path -Path "$($completeFile)$step")) {
     #record that we got this far
     New-Item -ItemType file "$($completeFile)$step"
 }
-#>

@@ -169,9 +169,9 @@ configuration DomainController
 							$d         = $($using:shortDomain).ToLower()
 							$c         = $($using:ComputerName).ToUpper()
 							$shortname = "$d-$c-CA"
-                            $rootName  = "CN={0}, {1}" -f $shortname, [string]::Join(", ", ($arr | % { "DC={0}" -f $_ }))
+                            $rootName  = "CN={0}, {1}" -f $shortname, [string]::Join(", ", ($arr | ForEach-Object { "DC={0}" -f $_ }))
 
-							$rootcert  = Get-ChildItem Cert:\LocalMachine\CA | where {$_.Subject -eq "$rootName"}
+							$rootcert  = Get-ChildItem Cert:\LocalMachine\CA | Where-Object {$_.Subject -eq "$rootName"}
 							if ($rootcert -eq $null) {
 							    Write-Verbose "ERROR: ROOT CERT `"$rootName`" NOT FOUND, cancelling cert export"
 							} else {
@@ -351,7 +351,7 @@ configuration DomainController
         {
             SetScript  = {
 				# Install AAD Tools
-					md c:\temp -ErrorAction Ignore
+					mkdir c:\temp -ErrorAction Ignore
 					Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
 
 					#Install-Module -Name Azure -AllowClobber -Force
