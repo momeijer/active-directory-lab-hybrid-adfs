@@ -241,8 +241,8 @@ configuration DomainController
 								$s        = $using:subject;
 								$s        = $s -f $using:instance
 								$ZoneName = $s
-								$Zone     = Add-DnsServerPrimaryZone -Name $ZoneName -ReplicationScope Forest -PassThru
-								$rec      = Add-DnsServerResourceRecordA -ZoneName $ZoneName -Name "@" -AllowUpdateAny -IPv4Address $IPAddress
+								Add-DnsServerPrimaryZone -Name $ZoneName -ReplicationScope Forest -PassThru
+								Add-DnsServerResourceRecordA -ZoneName $ZoneName -Name "@" -AllowUpdateAny -IPv4Address $IPAddress
 							 }
 
 				GetScript =  { @{} }
