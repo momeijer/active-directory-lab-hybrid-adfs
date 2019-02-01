@@ -272,7 +272,7 @@
       "properties": {
         "publisher": "Microsoft.Powershell",
         "type": "DSC",
-        "typeHandlerVersion": "2.21",
+        "typeHandlerVersion": "2.76",
         "forceUpdateTag": "1.02",
         "autoUpgradeMinorVersion": true,
         "settings": {
@@ -385,7 +385,7 @@
       "properties": {
         "publisher": "Microsoft.Powershell",
         "type": "DSC",
-        "typeHandlerVersion": "2.21",
+        "typeHandlerVersion": "2.76",
         "autoUpgradeMinorVersion": true,
         "forceUpdateTag": "1.01",
         "settings": {
@@ -457,7 +457,7 @@
       "properties": {
         "publisher": "Microsoft.Powershell",
         "type": "DSC",
-        "typeHandlerVersion": "2.21",
+        "typeHandlerVersion": "2.76",
         "autoUpgradeMinorVersion": false,
         "settings": {
           "modulesUrl": "[variables('adfsDSCTemplate')]",
