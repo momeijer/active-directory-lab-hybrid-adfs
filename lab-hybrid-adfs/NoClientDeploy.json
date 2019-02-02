@@ -258,7 +258,7 @@
       }
     },
     {
-      "apiVersion": "2018-04-01",
+      "apiVersion": "2017-03-30",
       "type": "Microsoft.Compute/virtualMachines/extensions",
       "name": "[concat(variables('adVMName'),'/Microsoft.Powershell.DSC')]",
       "location": "[variables('location')]",
@@ -272,7 +272,7 @@
       "properties": {
         "publisher": "Microsoft.Powershell",
         "type": "DSC",
-        "typeHandlerVersion": "2.76",
+        "typeHandlerVersion": "2.19",
         "forceUpdateTag": "1.02",
         "autoUpgradeMinorVersion": true,
         "settings": {
@@ -365,7 +365,7 @@
       }
     },
     {
-      "apiVersion": "2018-04-01",
+      "apiVersion": "2017-03-30",
       "type": "Microsoft.Compute/virtualMachines/extensions",
       "name": "[concat(variables('adfsVMName'), copyIndex(1),'/Microsoft.Powershell.DSC')]",
 
@@ -385,7 +385,7 @@
       "properties": {
         "publisher": "Microsoft.Powershell",
         "type": "DSC",
-        "typeHandlerVersion": "2.76",
+        "typeHandlerVersion": "2.19",
         "autoUpgradeMinorVersion": true,
         "forceUpdateTag": "1.01",
         "settings": {
@@ -439,7 +439,7 @@
       }
     },
     {
-      "apiVersion": "2018-04-01",
+      "apiVersion": "2017-03-30",
       "type": "Microsoft.Compute/virtualMachines/extensions",
       "name": "[concat(variables('wapVMName'), copyIndex(1),'/Microsoft.Powershell.DSC')]",
       "location": "[variables('location')]",
@@ -457,7 +457,7 @@
       "properties": {
         "publisher": "Microsoft.Powershell",
         "type": "DSC",
-        "typeHandlerVersion": "2.76",
+        "typeHandlerVersion": "2.19",
         "autoUpgradeMinorVersion": false,
         "settings": {
           "modulesUrl": "[variables('adfsDSCTemplate')]",
