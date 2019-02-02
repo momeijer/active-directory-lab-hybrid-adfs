@@ -46,8 +46,8 @@ configuration DomainController
 	$ClearDefUserPw = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($UserCreds.Password))
 
     Import-DscResource -ModuleName xActiveDirectory,xComputerManagement,xNetworking,xSmbShare,xAdcsDeployment,xCertificate,PSDesiredStateConfiguration,xPendingReboot
-
-    $Interface=Get-NetAdapter|Where Name -Like "Ethernet*"|Select-Object -First 1
+	
+	$Interface=Get-NetAdapter|Where Name -Like "Ethernet*"|Select-Object -First 1
     $InterfaceAlias=$($Interface.Name)
 
     [System.Management.Automation.PSCredential]$DomainCreds = New-Object System.Management.Automation.PSCredential ("${shortDomain}\$($Admincreds.UserName)", $Admincreds.Password)
@@ -60,12 +60,12 @@ configuration DomainController
             RebootNodeIfNeeded = $true
         }
 
-        WindowsFeature DNS 
-        { 
-            Ensure = "Present" 
-            Name = "DNS"		
+        WindowsFeature DNS
+        {
+            Ensure = "Present"
+            Name = "DNS"
         }
-
+        
         Script EnableDNSDiags
 	    {
       	    SetScript = { 
@@ -117,14 +117,7 @@ configuration DomainController
         {
             Ensure = "Present"
             Name = "AD-Domain-Services"
-            DependsOn = "[WindowsFeature]DNS"
-        }
-
-        WindowsFeature ADDSTools
-        {
-            Ensure = "Present"
-            Name = "RSAT-ADDS-Tools"
-            DependsOn = "[WindowsFeature]ADDSInstall"
+            DependsOn = "[WindowsFeature]ADTools"
         }
 
         xADDomain FirstDS
@@ -198,9 +191,9 @@ configuration DomainController
 							$d         = $($using:shortDomain).ToLower()
 							$c         = $($using:ComputerName).ToUpper()
 							$shortname = "$d-$c-CA"
-                            $rootName  = "CN={0}, {1}" -f $shortname, [string]::Join(", ", ($arr | ForEach-Object { "DC={0}" -f $_ }))
+                            $rootName  = "CN={0}, {1}" -f $shortname, [string]::Join(", ", ($arr | % { "DC={0}" -f $_ }))
 
-							$rootcert  = Get-ChildItem Cert:\LocalMachine\CA | Where-Object {$_.Subject -eq "$rootName"}
+							$rootcert  = Get-ChildItem Cert:\LocalMachine\CA | where {$_.Subject -eq "$rootName"}
 							if ($rootcert -eq $null) {
 							    Write-Verbose "ERROR: ROOT CERT `"$rootName`" NOT FOUND, cancelling cert export"
 							} else {
@@ -244,7 +237,7 @@ configuration DomainController
 								 $s = $using:subject;
 								 $s = $s -f $using:instance
 								 write-verbose "subject = $s";
-								 $cert = Get-ChildItem Cert:\LocalMachine\My | Where-Object {$_.Subject -eq "CN=$s"}
+								 $cert = Get-ChildItem Cert:\LocalMachine\My | where {$_.Subject -eq "CN=$s"}
 								 Export-PfxCertificate -FilePath "c:\src\$s.pfx" -Cert $cert -Password (ConvertTo-SecureString $Using:ClearPw -AsPlainText -Force)
 							 }
 
@@ -380,7 +373,7 @@ configuration DomainController
         {
             SetScript  = {
 				# Install AAD Tools
-					mkdir c:\temp -ErrorAction Ignore
+					md c:\temp -ErrorAction Ignore
 					Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
 
 					#Install-Module -Name Azure -AllowClobber -Force
