@@ -258,7 +258,7 @@
       }
     },
     {
-      "apiVersion": "[providers('Microsoft.Compute','virtualMachines/extensions').apiVersions[0]]",
+      "apiVersion": "2018-04-01",
       "type": "Microsoft.Compute/virtualMachines/extensions",
       "name": "[concat(variables('adVMName'),'/Microsoft.Powershell.DSC')]",
       "location": "[variables('location')]",
@@ -365,7 +365,7 @@
       }
     },
     {
-      "apiVersion": "[providers('Microsoft.Compute','virtualMachines/extensions').apiVersions[0]]",
+      "apiVersion": "2018-04-01",
       "type": "Microsoft.Compute/virtualMachines/extensions",
       "name": "[concat(variables('adfsVMName'), copyIndex(1),'/Microsoft.Powershell.DSC')]",
 
@@ -439,7 +439,7 @@
       }
     },
     {
-      "apiVersion": "[providers('Microsoft.Compute','virtualMachines/extensions').apiVersions[0]]",
+      "apiVersion": "2018-04-01",
       "type": "Microsoft.Compute/virtualMachines/extensions",
       "name": "[concat(variables('wapVMName'), copyIndex(1),'/Microsoft.Powershell.DSC')]",
       "location": "[variables('location')]",
